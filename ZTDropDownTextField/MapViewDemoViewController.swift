@@ -67,6 +67,10 @@ class MapViewDemoViewController: UIViewController {
 }
 
 extension MapViewDemoViewController: ZTDropDownTextFieldDataSourceDelegate {
+    func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, editingChanged text: String) {
+        
+    }
+
     func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, numberOfRowsInSection section: Int) -> Int {
         return placemarkList.count
     }

@@ -67,6 +67,10 @@ class SimpleDemoViewController: UIViewController {
 }
 
 extension SimpleDemoViewController: ZTDropDownTextFieldDataSourceDelegate {
+    func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, editingChanged text: String) {
+        <#code#>
+    }
+
     func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, numberOfRowsInSection section: Int) -> Int {
         return placemarkList.count
     }

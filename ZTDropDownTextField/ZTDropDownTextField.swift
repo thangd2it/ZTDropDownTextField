@@ -21,6 +21,7 @@ public protocol ZTDropDownTextFieldDataSourceDelegate: NSObjectProtocol {
     func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, numberOfRowsInSection section: Int) -> Int
     func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell
     func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, didSelectRowAtIndexPath indexPath: IndexPath)
+    func dropDownTextField(_ dropDownTextField: ZTDropDownTextField, editingChanged text: String)
 }
 
 open class ZTDropDownTextField: UITextField {
@@ -48,6 +49,8 @@ open class ZTDropDownTextField: UITextField {
     // MARK: Setup Methods
     fileprivate func setupTextField() {
         addTarget(self, action: #selector(ZTDropDownTextField.editingChanged(_:)), for:.editingChanged)
+        addTarget(self, action: #selector(ZTDropDownTextField.editingEndAndExit(_:)), for: .editingDidEndOnExit)
+        
     }
     
     fileprivate func setupTableView() {
@@ -128,10 +131,22 @@ open class ZTDropDownTextField: UITextField {
         if textField.text!.characters.count > 0 {
             setupTableView()
             self.tableViewAppearanceChange(true)
+            if let ds = dataSourceDelegate {
+                if ds.responds(to: Selector("dropDownTextField:editingChanged:")) {
+                    ds.dropDownTextField(self, editingChanged: self.text!)
+                    dropDownTableView.reloadData()
+                }
+            }
         } else {
             if (dropDownTableView) != nil {
                 self.tableViewAppearanceChange(false)
             }
+        }
+    }
+    
+    func editingEndAndExit(_ textField: UITextField) {
+        if (dropDownTableView) != nil {
+            self.tableViewAppearanceChange(false)
         }
     }
     
